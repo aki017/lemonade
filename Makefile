@@ -7,6 +7,8 @@ install:
 	go install -ldflags "-X github.com/pocke/lemonade/lemon.Version=$(VERSION)"
 
 release:
+	GOX_WINDOWS_386_LDFLAGS="-H windowsgui -X github.com/pocke/lemonade/lemon.Version=$(VERSION)" \
+	GOX_WINDOWS_AMD64_LDFLAGS="-H windowsgui -X github.com/pocke/lemonade/lemon.Version=$(VERSION)" \
 	gox --arch 'amd64 386' --os 'windows linux darwin' --output "dist/{{.Dir}}_{{.OS}}_{{.Arch}}/{{.Dir}}" -ldflags "-X github.com/pocke/lemonade/lemon.Version=$(VERSION)"
 	zip      pkg/lemonade_windows_386.zip     dist/lemonade_windows_386/lemonade.exe   -j
 	zip      pkg/lemonade_windows_amd64.zip   dist/lemonade_windows_amd64/lemonade.exe -j

@@ -3,11 +3,14 @@ package main
 import (
 	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/pocke/lemonade/client"
 	"github.com/pocke/lemonade/lemon"
 	"github.com/pocke/lemonade/server"
 )
+
+//go:generate go-bindata icon/
 
 func main() {
 
@@ -42,6 +45,9 @@ func Do(c *lemon.CLI, args []string) int {
 		text, err = lc.Paste()
 		c.Out.Write([]byte(text))
 	case lemon.SERVER:
+		if runtime.GOOS == "windows" {
+			go tray()
+		}
 		err = server.Serve(c)
 	default:
 		panic("Unreachable code")
